@@ -92,7 +92,7 @@ class ContactController extends Controller
             } else {
                 exit('Not Found');
             }
-        }
+         }
 
         $reward_enabled = (request()->session()->get('business.enable_rp') == 1 && in_array($type, ['customer'])) ? true : false;
 
@@ -122,9 +122,7 @@ class ContactController extends Controller
 
         $contact = $this->contactUtil->getContactQuery($business_id, 'supplier');
 
-        if (request()->has('has_purchase_due')) {
-            $contact->havingRaw('(total_purchase - purchase_paid) > 0');
-        }
+
 
         if (request()->has('has_purchase_return')) {
             $contact->havingRaw('total_purchase_return > 0');
@@ -146,6 +144,10 @@ class ContactController extends Controller
             $contact->join('user_contact_access AS uc', 'contacts.id', 'uc.contact_id')
                 ->where('uc.user_id', request()->input('assigned_to'));
         }
+
+if (request()->has('has_purchase_due')) {
+    $contact->havingRaw('SUM(IF(t.type = "purchase", final_total, 0)) - COALESCE(SUM(IF(t.type = "purchase", (SELECT SUM(amount) FROM transaction_payments WHERE transaction_payments.transaction_id=t.id), 0)), 0) > 0');
+}
 
         return Datatables::of($contact)
             ->addColumn('address', '{{implode(", ", array_filter([$address_line_1, $address_line_2, $city, $state, $country, $zip_code]))}}')
