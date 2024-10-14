@@ -119,6 +119,7 @@
                                         <th>@lang('sale.customer_name')</th>
                                         <th>@lang('lang_v1.contact_id')</th>
                                         <th>@lang('sale.invoice_no')</th>
+                                        <th>@lang('Register Id')</th>
                                         <th>@lang('messages.date')</th>
                                         <th>@lang('sale.qty')</th>
                                         <th>@lang('sale.unit_price')</th>
@@ -132,6 +133,7 @@
                                     <tr class="bg-gray font-17 footer-total text-center">
                                         <td colspan="6"><strong>@lang('sale.total'):</strong></td>
                                         <td id="footer_total_sold"></td>
+                                        <td></td>
                                         <td></td>
                                         <td></td>
                                         <td id="footer_tax"></td>

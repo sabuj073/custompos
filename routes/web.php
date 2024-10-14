@@ -540,6 +540,7 @@ Route::middleware(['setData', 'auth', 'SetSessionData', 'language', 'timezone'])
     Route::get('/purchases/{id}', [PurchaseController::class, 'show']);
     Route::get('/download-purchase-order/{id}/pdf', [PurchaseOrderController::class, 'downloadPdf'])->name('purchaseOrder.downloadPdf');
     Route::get('/sells/{id}', [SellController::class, 'show']);
+    Route::get('/cashshow/{id}', [CashRegisterController::class, 'show']);
     Route::get('/sells/{transaction_id}/print', [SellPosController::class, 'printInvoice'])->name('sell.printInvoice');
     Route::get('/download-sells/{transaction_id}/pdf', [SellPosController::class, 'downloadPdf'])->name('sell.downloadPdf');
     Route::get('/download-quotation/{id}/pdf', [SellPosController::class, 'downloadQuotationPdf'])

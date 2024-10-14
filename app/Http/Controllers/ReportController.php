@@ -1752,6 +1752,7 @@ class ReportController extends Controller
                 ->join('contacts as c', 't.contact_id', '=', 'c.id')
                 ->join('products as p', 'pv.product_id', '=', 'p.id')
                 ->leftjoin('tax_rates', 'transaction_sell_lines.tax_id', '=', 'tax_rates.id')
+                ->leftjoin('cash_register_transactions as ct', 'ct.transaction_id', '=', 't.id')
                 ->leftjoin('units as u', 'p.unit_id', '=', 'u.id')
                 ->where('t.business_id', $business_id)
                 ->where('t.type', 'sell')
@@ -1762,6 +1763,7 @@ class ReportController extends Controller
                     'pv.name as product_variation',
                     'v.name as variation_name',
                     'v.sub_sku',
+                    'ct.cash_register_id as register_id',
                     'c.name as customer',
                     'c.supplier_business_name',
                     'c.contact_id',
@@ -1835,6 +1837,14 @@ class ReportController extends Controller
                      return '<a data-href="'.action([\App\Http\Controllers\SellController::class, 'show'], [$row->transaction_id])
                             .'" href="#" data-container=".view_modal" class="btn-modal">'.$row->invoice_no.'</a>';
                  })
+                 ->editColumn('register_id', function ($row) {
+                    if($row->register_id){
+                     return '<a data-href="'.action([\App\Http\Controllers\CashRegisterController::class, 'show'], [$row->register_id])
+                            .'" href="#" data-container=".view_modal" class="btn-modal">'.$row->register_id.'</a>';
+                    }else{
+                        return "";
+                    }
+                 })
                 ->editColumn('transaction_date', '{{@format_datetime($transaction_date)}}')
                 ->editColumn('unit_sale_price', function ($row) {
                     return '<span class="unit_sale_price" data-orig-value="'.$row->unit_sale_price.'">'.
@@ -1872,7 +1882,7 @@ class ReportController extends Controller
                      class="tax" data-unit="'.$row->tax.'"><small>('.$row->tax.')</small></span>';
                 })
                 ->editColumn('customer', '@if(!empty($supplier_business_name)) {{$supplier_business_name}},<br>@endif {{$customer}}')
-                ->rawColumns(['invoice_no', 'unit_sale_price', 'subtotal', 'sell_qty', 'discount_amount', 'unit_price', 'tax', 'customer'])
+                ->rawColumns(['invoice_no','register_id','unit_sale_price', 'subtotal', 'sell_qty', 'discount_amount', 'unit_price', 'tax', 'customer'])
                 ->make(true);
         }
 
