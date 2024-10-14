@@ -22,7 +22,7 @@
 				<div class="col-sm-3">
 					<div class="form-group">
 						{!! Form::label('location_id', __('purchase.business_location').':*') !!}
-						{!! Form::select('location_id', $business_locations, null, ['class' => 'form-control select2', 'placeholder' => __('messages.please_select'), 'required']); !!}
+						{!! Form::select('location_id', $business_locations, 1, ['class' => 'form-control select2', 'placeholder' => __('messages.please_select'), 'required']); !!}
 					</div>
 				</div>
 				<div class="col-sm-3">
@@ -134,5 +134,11 @@
 	<script src="{{ asset('js/stock_damaged.js?v=' . $asset_v) }}"></script>
 	<script type="text/javascript">
 		__page_leave_confirmation('#stock_adjustment_form');
+	</script>
+	<script>
+		$(document).ready(function(){
+$("#location_id").trigger('change')
+});
+		
 	</script>
 @endsection

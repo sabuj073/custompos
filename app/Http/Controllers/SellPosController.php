@@ -737,7 +737,7 @@ class SellPosController extends Controller
                     return $output;
                 } else {
                     return redirect()
-                        ->action([\App\Http\Controllers\SellController::class, 'index'])
+                        ->action([\App\Http\Controllers\SellController::class, 'index_damaged'])
                         ->with('status', $output);
                 }
             }
@@ -749,7 +749,7 @@ class SellPosController extends Controller
                 if (!$this->moduleUtil->isSubscribed($business_id)) {
                     return $this->moduleUtil->expiredResponse();
                 } elseif (!$this->moduleUtil->isQuotaAvailable('invoices', $business_id)) {
-                    return $this->moduleUtil->quotaExpiredResponse('invoices', $business_id, action([\App\Http\Controllers\SellPosController::class, 'index']));
+                    return $this->moduleUtil->quotaExpiredResponse('invoices', $business_id, action([\App\Http\Controllers\SellPosController::class, 'index_damaged']));
                 }
 
                 $user_id = $request->session()->get('user.id');
@@ -1068,7 +1068,7 @@ class SellPosController extends Controller
                 }
 
                 return redirect()
-                    ->action([\App\Http\Controllers\SellController::class, 'index'])
+                    ->action([\App\Http\Controllers\SellController::class, 'index_damaged'])
                     ->with('status', $output);
             }
         }
